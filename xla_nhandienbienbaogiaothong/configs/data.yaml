@@ -1,0 +1,16 @@
+# datasets/data.yaml
+path: datasets/traffic_signs  # thư mục dataset
+train: train/images
+val: val/images
+test: test/images
+
+# số class
+nc: 5
+
+# tên class
+names:
+  - stop
+  - speed_30
+  - speed_40
+  - speed_50
+  - traffic_light

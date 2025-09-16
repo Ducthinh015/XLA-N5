@@ -6,3 +6,6 @@ matplotlib
 fastapi
 uvicorn
 pydantic
+torch
+numpy
+wandb
