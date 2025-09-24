@@ -9,3 +9,5 @@ pydantic
 torch
 numpy
 wandb
+wandb login
+
