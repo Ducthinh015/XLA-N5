@@ -51,14 +51,12 @@ def split_dataset(images_dir, labels_dir, output_dir,
         print(f"✅ {split}: {len(files)} ảnh")
 
     print("\n📂 Dataset đã được chia thành train/val/test trong:", output_dir)
-# chạy gg colab 
-# import sys
-# sys.path.append("/content/XLA-N5-main/XLA-N5-main/xla_nhandienbienbaogiaothong/scripts")
 
-# from split_dataset import split_dataset
+if __name__ == "__main__":
+    images_path = r"D:\KI7-2025\XULIHINHANH\XLA_BTN\XLA-N5\split_dataset_v2\train\images" #chỉnh sửa lại đường dẫn
+    labels_path = r"D:\KI7-2025\XULIHINHANH\XLA_BTN\XLA-N5\split_dataset_v2\train\labels"
+    output_path = r"D:\KI7-2025\XULIHINHANH\XLA_BTN\XLA-N5\split_dataset_v2\output"
 
-# images_path = "/content/drive/MyDrive/XLA_DATA/dataset/archive/images"
-# labels_path = "/content/drive/MyDrive/XLA_DATA/dataset/archive/labels"
-# output_path = "/content/drive/MyDrive/XLA_DATA/split_dataset_v2"
-
-# split_dataset(images_path, labels_path, output_path) 
+    split_dataset(images_path, labels_path, output_path,
+                  train_ratio=0.7, val_ratio=0.2, test_ratio=0.1,
+                  overwrite=True, seed=42)
