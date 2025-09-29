@@ -1,3 +1,4 @@
+# pip install -r requirements.txt
 torch
 torchvision
 ultralytics
@@ -6,8 +7,7 @@ matplotlib
 fastapi
 uvicorn
 pydantic
-torch
 numpy
 wandb
-wandb login
+
 
