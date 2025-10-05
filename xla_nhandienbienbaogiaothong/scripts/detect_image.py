@@ -1,27 +1,25 @@
 from ultralytics import YOLO
 import os
+import cv2
 
-# 1. Đường dẫn model
-MODEL_PATH = os.path.join(r"D:\KI7-2025\XULIHINHANH\XLA_BTN\XLA-N5\xla_nhandienbienbaogiaothong\scripts\traffic_signs_exp13\weights\best.pt")
+MODEL_PATH = r"D:\TL_XLA\XLA-N5\xla_nhandienbienbaogiaothong\traffic_signs_exp13\weights\best.pt"
+IMAGE_PATH = "2874.jpg"
 
 if not os.path.exists(MODEL_PATH):
     raise FileNotFoundError(f"Không tìm thấy model tại {MODEL_PATH}")
 
-# 2. Load model
-model = YOLO(MODEL_PATH)
-print("Model YOLO đã load thành công!")
-
-# 3. Test ảnh
-IMAGE_PATH = "0133.jpg"   # đổi thành ảnh test của bạn
-
 if not os.path.exists(IMAGE_PATH):
     raise FileNotFoundError(f"Không tìm thấy ảnh test tại {IMAGE_PATH}")
 
-# Thực hiện detect
-results = model.predict(source=IMAGE_PATH, save=True, imgsz=640, conf=0.1)
+model = YOLO(MODEL_PATH)
+results = model.predict(source=IMAGE_PATH, conf=0.3, save=True)
 
-# 4. In kết quả
+# Hiển thị hình có khung
+annotated = results[0].plot()
+cv2.imshow("Kết quả detect", annotated)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+# In thêm thông tin box
 for r in results:
-    print("Kết quả detection:")
-    print(r.boxes)   # bounding boxes
-    print(r.probs)   # xác suất dự đoán
+    print("Boxes:", r.boxes)
