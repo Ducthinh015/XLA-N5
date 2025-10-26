@@ -4,9 +4,9 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
 # --- CHỈNH ĐƯỜNG DẪN Ở ĐÂY ---
-image_dir = r"C:\Users\DELL\Documents\XLA-N5-main\XLA-N5-main\xla_nhandienbienbaogiaothong\dataset\dataset\archive\archive\output\train\images"
-label_dir = r"C:\Users\DELL\Documents\XLA-N5-main\XLA-N5-main\xla_nhandienbienbaogiaothong\dataset\dataset\archive\archive\output\train\labels"
-output_dir = r"C:\Users\DELL\Documents\XLA-N5-main\XLA-N5-main\xla_nhandienbienbaogiaothong\output_auto"
+image_dir = r"N:\BaiTap\XuLyAnhVaThiGiac\XLA-N5\xla_nhandienbienbaogiaothong\dataset\archive\images"
+label_dir = r"N:\BaiTap\XuLyAnhVaThiGiac\XLA-N5\xla_nhandienbienbaogiaothong\dataset\archive\labels"
+output_dir = r"N:\BaiTap\XuLyAnhVaThiGiac\XLA-N5\xla_nhandienbienbaogiaothong\dataset\archive\output"
 os.makedirs(output_dir, exist_ok=True)
 # -------------------------------
 

@@ -1,10 +1,21 @@
+"""
+Script chia dataset thành train/val/test
+Sử dụng cấu hình từ config.py hoặc environment variables
+"""
 import os
 import shutil
 import random
+from config import TRAIN_RATIO, VAL_RATIO, TEST_RATIO
+import argparse
 
 def split_dataset(images_dir, labels_dir, output_dir,
-                  train_ratio=0.7, val_ratio=0.2, test_ratio=0.1,
+                  train_ratio=None, val_ratio=None, test_ratio=None,
                   overwrite=True, seed=42):
+    # Sử dụng giá trị từ config nếu không được cung cấp
+    train_ratio = train_ratio or TRAIN_RATIO
+    val_ratio = val_ratio or VAL_RATIO
+    test_ratio = test_ratio or TEST_RATIO
+    
     # Kiểm tra tổng tỉ lệ
     total_ratio = train_ratio + val_ratio + test_ratio
     if abs(total_ratio - 1.0) > 1e-6:
@@ -53,10 +64,63 @@ def split_dataset(images_dir, labels_dir, output_dir,
     print("\n📂 Dataset đã được chia thành train/val/test trong:", output_dir)
 
 if __name__ == "__main__":
-    images_path = r"D:\KI7-2025\XULIHINHANH\XLA_BTN\XLA-N5\split_dataset_v2\train\images" #chỉnh sửa lại đường dẫn
-    labels_path = r"D:\KI7-2025\XULIHINHANH\XLA_BTN\XLA-N5\split_dataset_v2\train\labels"
-    output_path = r"D:\KI7-2025\XULIHINHANH\XLA_BTN\XLA-N5\split_dataset_v2\output"
-
-    split_dataset(images_path, labels_path, output_path,
-                  train_ratio=0.7, val_ratio=0.2, test_ratio=0.1,
-                  overwrite=True, seed=42)
+    parser = argparse.ArgumentParser(
+        description="Chia dataset thành train/val/test"
+    )
+    parser.add_argument(
+        "--images",
+        type=str,
+        required=True,
+        help="Đường dẫn thư mục chứa ảnh"
+    )
+    parser.add_argument(
+        "--labels",
+        type=str,
+        required=True,
+        help="Đường dẫn thư mục chứa labels"
+    )
+    parser.add_argument(
+        "--output",
+        type=str,
+        required=True,
+        help="Đường dẫn thư mục output"
+    )
+    parser.add_argument(
+        "--train-ratio",
+        type=float,
+        help=f"Tỉ lệ train (default: {TRAIN_RATIO})"
+    )
+    parser.add_argument(
+        "--val-ratio",
+        type=float,
+        help=f"Tỉ lệ val (default: {VAL_RATIO})"
+    )
+    parser.add_argument(
+        "--test-ratio",
+        type=float,
+        help=f"Tỉ lệ test (default: {TEST_RATIO})"
+    )
+    parser.add_argument(
+        "--seed",
+        type=int,
+        default=42,
+        help="Random seed (default: 42)"
+    )
+    parser.add_argument(
+        "--no-overwrite",
+        action="store_true",
+        help="Không ghi đè thư mục output nếu đã tồn tại"
+    )
+    
+    args = parser.parse_args()
+    
+    split_dataset(
+        args.images,
+        args.labels,
+        args.output,
+        train_ratio=args.train_ratio,
+        val_ratio=args.val_ratio,
+        test_ratio=args.test_ratio,
+        overwrite=not args.no_overwrite,
+        seed=args.seed
+    )

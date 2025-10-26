@@ -1,7 +1,7 @@
 import os
 import cv2
 
-image_dir = r"C:\XLA-N5-main\XLA-N5-main\xla_nhandienbienbaogiaothong\dataset\archive\archive\images"
+image_dir = r"N:\BaiTap\XuLyAnhVaThiGiac\XLA-N5\xla_nhandienbienbaogiaothong\dataset\archive\images"
 # 5 lớp biển báo
 CLASSES = {
     0: "Biển báo cấm",
