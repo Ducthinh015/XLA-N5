@@ -1,0 +1,6 @@
+# configs/model.yaml
+
+model: yolov11n.pt
+
+# số class (giống data.yaml)
+nc: 5
