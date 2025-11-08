@@ -46,12 +46,24 @@ const UploadImage = ({ onResult }) => {
           'Content-Type': 'multipart/form-data',
         },
       })
-      
+      // Map backend detections -> UI schema
+      const mapped = (response?.data?.detections || []).map(d => ({
+        class: d.cls_name,
+        confidence: d.conf,
+        bbox: {
+          x: d.bbox?.[0] ?? 0,
+          y: d.bbox?.[1] ?? 0,
+          width: (d.bbox?.[2] ?? 0) - (d.bbox?.[0] ?? 0),
+          height: (d.bbox?.[3] ?? 0) - (d.bbox?.[1] ?? 0)
+        }
+      }))
+
       onResult({
         type: 'image',
         image: preview,
-        detections: response.data.detections,
-        annotatedImage: response.data.annotated_image,
+        detections: mapped,
+        // backend returns a data URL already
+        annotatedImage: response?.data?.annotated_image || null,
       })
     } catch (err) {
       console.error('Full error:', err)

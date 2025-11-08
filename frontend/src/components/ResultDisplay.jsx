@@ -28,8 +28,21 @@ const ResultDisplay = ({ result, type }) => {
   }
 
   // Image Result
-  if (type === 'image' && result.detections) {
-    const detections = result.detections
+  if (type === 'image') {
+    const detections = Array.isArray(result?.detections)
+      ? result.detections
+      : Array.isArray(result?.results)
+      ? result.results.map(p => ({
+          class: p.label,
+          confidence: p.score,
+          bbox: {
+            x: p.box?.x ?? 0,
+            y: p.box?.y ?? 0,
+            width: (p.box?.w ?? 0),
+            height: (p.box?.h ?? 0)
+          }
+        }))
+      : []
     
     return (
       <div className="space-y-4">
@@ -38,10 +51,12 @@ const ResultDisplay = ({ result, type }) => {
         </h2>
 
         {/* Annotated Image */}
-        {result.annotatedImage && (
+        {(result.annotatedImage || result.annotated_image) && (
           <div className="mb-4">
             <img
-              src={`data:image/jpeg;base64,${result.annotatedImage}`}
+              src={(result.annotated_image || result.annotatedImage).startsWith('data:image')
+                ? (result.annotated_image || result.annotatedImage)
+                : `data:image/jpeg;base64,${result.annotated_image || result.annotatedImage}`}
               alt="Result"
               className="w-full h-auto rounded-lg shadow-md border-2 border-blue-500"
             />
@@ -63,12 +78,14 @@ const ResultDisplay = ({ result, type }) => {
             <div>
               <span className="text-gray-600">Độ tin cậy TB:</span>
               <span className="font-bold text-green-600 ml-2">
-                {detections.length > 0
-                  ? (detections.reduce((sum, d) => sum + d.confidence, 0) /
-                      detections.length *
-                      100).toFixed(1)
-                  : 0}
-                %
+                {(() => {
+                  const avg = result?.avg_conf_percent ?? (
+                    detections.length > 0
+                      ? (detections.reduce((sum, d) => sum + (d.confidence ?? 0), 0) / detections.length) * 100
+                      : 0
+                  )
+                  return avg.toFixed ? avg.toFixed(1) : Number(avg).toFixed(1)
+                })()}%
               </span>
             </div>
           </div>

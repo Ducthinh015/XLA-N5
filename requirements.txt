@@ -4,7 +4,6 @@ torchvision
 ultralytics
 opencv-python
 matplotlib
-fastapi
 uvicorn
 pydantic
 numpy
