@@ -28,6 +28,7 @@ def infer_image_route():
     out = predict_image(request.files["file"].stream, q_conf=q_conf, q_imgsz=q_imgsz)
     boxes_xywh = [{"x": p["box"]["x"], "y": p["box"]["y"], "w": p["box"]["w"], "h": p["box"]["h"], "label": p["label"], "score": p["score"]} for p in out["predictions"]]
     boxes_xyxy = [{"x1": d["bbox"][0], "y1": d["bbox"][1], "x2": d["bbox"][2], "y2": d["bbox"][3], "label": d["cls_name"], "score": d["conf"]} for d in out["detections"]]
+    objects_simple = out.get("objects_simple", [])
     resp = {
         "success": True,
         "message": "ok",
@@ -47,7 +48,8 @@ def infer_image_route():
         "results": out["predictions"],
         "objects": out["predictions"],
         "boxes_xywh": boxes_xywh,
-        "boxes_xyxy": boxes_xyxy
+        "boxes_xyxy": boxes_xyxy,
+        "objects_simple": objects_simple
     }
     return jsonify(resp)
 
@@ -89,3 +91,4 @@ bp.add_url_rule("/api/detect/image-annotated", view_func=infer_image_annotated_r
 
 bp.add_url_rule("/api/infer/label", view_func=infer_label_route, methods=["POST"])
 bp.add_url_rule("/api/detect/label", view_func=infer_label_route, methods=["POST"])
+

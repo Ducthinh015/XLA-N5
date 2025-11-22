@@ -46,24 +46,34 @@ const UploadImage = ({ onResult }) => {
           'Content-Type': 'multipart/form-data',
         },
       })
-      // Map backend detections -> UI schema
-      const mapped = (response?.data?.detections || []).map(d => ({
-        class: d.cls_name,
-        confidence: d.conf,
-        bbox: {
-          x: d.bbox?.[0] ?? 0,
-          y: d.bbox?.[1] ?? 0,
-          width: (d.bbox?.[2] ?? 0) - (d.bbox?.[0] ?? 0),
-          height: (d.bbox?.[3] ?? 0) - (d.bbox?.[1] ?? 0)
+      const data = response?.data || {}
+      const simple = Array.isArray(data.objects_simple) ? data.objects_simple : []
+      const mapped = (simple.length > 0 ? simple : (data.detections || [])).map(d => {
+        if (Array.isArray(d.bbox)) {
+          const x1 = d.bbox[0] ?? 0, y1 = d.bbox[1] ?? 0, x2 = d.bbox[2] ?? 0, y2 = d.bbox[3] ?? 0
+          return {
+            class: d.label || d.cls_name,
+            confidence: d.confidence ?? d.conf,
+            bbox: { x: x1, y: y1, width: x2 - x1, height: y2 - y1 }
+          }
         }
-      }))
+        return {
+          class: d.label || d.cls_name,
+          confidence: d.confidence ?? d.conf ?? d.score,
+          bbox: {
+            x: d.box?.x ?? 0,
+            y: d.box?.y ?? 0,
+            width: (d.box?.w ?? 0),
+            height: (d.box?.h ?? 0)
+          }
+        }
+      })
 
       onResult({
         type: 'image',
         image: preview,
         detections: mapped,
-        // backend returns a data URL already
-        annotatedImage: response?.data?.annotated_image || null,
+        annotatedImage: data?.annotated_image || null,
       })
     } catch (err) {
       console.error('Full error:', err)

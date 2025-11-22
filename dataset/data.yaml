@@ -1,0 +1,27 @@
+path: /content/quoc-kiet-10
+
+train: train/images
+val: valid/images
+test: test/images
+
+nc: 19
+names:
+  - Cam_Dau_Xe
+  - Cam_Di_Nguoc_Chieu
+  - Cam_Dung_Va_Dau_Xe
+  - Cam_O_To
+  - Cam_Re_Trai
+  - Cam_XeTai_XeKhach
+  - Cam_Xe_Tai
+  - Chi_Huong_Di_Phai
+  - Cho_Quay_Xe
+  - Den_Giao_Thong
+  - Duong_Co_Go_Giam_Toc
+  - Duong_Cong_Ben_Phai
+  - Duong_Nguoi_Di_Bo_Cat_Ngang
+  - Duong_Nguoi_Di_Bo_Sang_Ngang
+  - Giao_Nhau_Duong_Uu_Tien
+  - Gioi_Han_Toc_Do_25
+  - Tre_Em
+  - Vong_Xuyen
+  - Xe_Bus
